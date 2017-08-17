@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+.datagrid .datagrid-column .datagrid-column-title {
+	text-align: center;
+}
+@-webkit-keyframes change-twinkling-yellow {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background: -webkit-linear-gradient( 0deg, orange, #fff);
+    }
+    to {
+        border-radius: 20px;
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 20px #FF0088;
+        background: -webkit-radial-gradient( #FFB6C1, #EEEE00, #DDDDFF);
+    }
+}
+@-webkit-keyframes change-twinkling-green {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background: -webkit-radial-gradient( #EEEE00, green, #FF5809);
+    }
+    to {
+        border-radius: 20px;
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 20px blueviolet;
+        background: -webkit-radial-gradient( #EEEE00, green, #FF5809);
+    }
+}
+@-webkit-keyframes change-twinkling-pink {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background: -webkit-radial-gradient( #EEEE00, #D15FEE, #FF5809);
+    }
+    to {
+        border-radius: 20px;
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 20px greenyellow;
+        background: -webkit-radial-gradient( #EEEE00, #D15FEE, #FF5809);
+    }
+}
+
+.change-twink-yellow {
+    -webkit-animation: change-twinkling-yellow 1s infinite ease-in-out;
+}
+.change-twink-green {
+    -webkit-animation: change-twinkling-green 1s infinite ease-in-out;
+}
+.change-twink-pink {
+    -webkit-animation: change-twinkling-pink 1s infinite ease-in-out;
+}

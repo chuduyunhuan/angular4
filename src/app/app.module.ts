@@ -3,12 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+import { MapModule } from './Map/map.module';
+import { AnalyseModule } from './Analyse/analyse.module';
+
+import { ClarityModule } from "clarity-angular";
+import { AppRoutingModule } from './app-routing.module';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    MapModule,
+    AnalyseModule,
+    ClarityModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

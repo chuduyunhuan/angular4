@@ -1,0 +1,23 @@
+<clr-datagrid>
+    <clr-dg-column>User ID</clr-dg-column>
+    <clr-dg-column>
+        Name
+        <clr-dg-string-filter [clrDgStringFilter]="nameFilter"></clr-dg-string-filter>
+    </clr-dg-column>
+    <clr-dg-column>Power</clr-dg-column>
+    <clr-dg-column>Salary</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let org of orgs" [clrDgItem]="org">
+        <clr-dg-cell>{{org.id}}</clr-dg-cell>
+        <clr-dg-cell><a [routerLink]="['./', org.id]" routerLinkActive="active" target="_parent">{{org.name}}</a></clr-dg-cell>
+        <clr-dg-cell>{{org.power? org.power : 'default'}}</clr-dg-cell>
+        <clr-dg-cell>{{org.salary? org.salary : '$5000'}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+            of {{pagination.totalItems}} orgs
+        <clr-dg-pagination #pagination [clrDgPageSize]="pageSize" [clrDgTotalItems]="orgs.length" ></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+<router-outlet></router-outlet>

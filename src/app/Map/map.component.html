@@ -1,0 +1,49 @@
+<div id="map" class="map"></div>
+<div *ngIf="modalDataCenter">
+    <div class="modal">
+        <div class="modal-dialog modal-lg" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-label="Close" class="close" type="button" (click)="closeModalDataCenter()">
+                        <clr-icon aria-hidden="true" shape="close"></clr-icon>
+                    </button>
+                    <h3 class="modal-title">Site Overview - {{modalInfo.address}}</h3>
+                </div>
+                <div class="modal-body row row-nowrap" >
+                    <div class="vcd-info-style">
+                        <div><p><b>DR vCD </b></p></div>
+                        <div><p><b># of Orgs </b></p></div>
+                        <div><p><b># of Replications in Error </b></p></div>
+                        <div><p><b>System Status </b></p></div>
+                    </div>
+                    <div *ngFor="let vcd of vcds" class="vcd-info-style">
+                        <div class="bottom-border">
+                            <div class="row" style="margin-left: -22px;">
+                                <input type="radio" style="margin: 5px;" [checked]="vcd.site == siteChecked" (click)="changeSiteChecked(vcd.site)" />
+                                <p style="margin-top: -2px;">{{vcd.name}}</p> 
+                            </div>
+                            <p style="margin-top: 0;"><span>{{vcd?.site}}</span></p>
+                        </div>
+                        <div class="bottom-border">
+                            <p><span>{{vcd?.orgs}}</span></p>
+                        </div>
+                        <div class="bottom-border">
+                            <p><span>{{vcd?.errors}}</span></p>
+                        </div>
+                        <div>
+                            <p>
+                                <span *ngIf="vcd.status == 'Normal'" class="badge badge-success"></span>
+                                <span *ngIf="vcd.status == 'Warning'" class="badge badge-orange"></span>
+                                <span *ngIf="vcd.status == 'Error'" class="badge badge-danger"></span>
+                                <span>{{vcd?.status}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="http://{{siteChecked}}" target="_blank" (click)="closeModalDataCenter()">Enter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
