@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MapService } from './map.service';
+import { AnalyseService } from '../Analyse/analyse.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -9,44 +10,49 @@ import * as L from 'leaflet';
 })
 
 export class MapComponent implements OnInit {
-	map: any;
-	dataCenterGroup = new L.featureGroup();
-	modalDataCenter = false;
-	modalInfo = {
+    map: any;
+    dataCenterGroup = new L.featureGroup();
+    modalDataCenter = false;
+    modalInfo = {
         address: ''
     };
+    siteChecked: string;
     vcds = [];
     blinkList = ['change-twink-yellow', 'change-twink-green', 'change-twink-pink'];
-	constructor(private mapService: MapService) {}
-	ngOnInit() {
-		this.initMap();
-	}
-	initMap() {
-		this.map = L.map('map').setView(L.latLng([41.123131, -87.32366]), 5);
-	    let mapboxAccessToken = 'pk.eyJ1IjoiY2h1ZHV5dW5odWFuIiwiYSI6IjRkNDY1ZGFjODhhMjE3OWRiZjBhNGQ3Mzk0YjkwYzA0In0.OL0_ZspJJ36sMw_KyEDHmA';
-	    let url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken
-	    L.tileLayer(url, {
-	        id: 'mapbox.dark',
-	        noWrap: true,
-	        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-	        maxZoom: 7,
-	        minZoom: 3
-	    }).addTo(this.map);
-	    this.addDataCenterLayer();
-	    this.addTwinkLayer();
-	}
-	addDataCenterLayer() {
+    constructor(
+    private mapService: MapService,
+    private analyseService: AnalyseService
+  ) {}
+    ngOnInit() {
+        this.initMap();
+    }
+    initMap() {
+        this.map = L.map('map').setView(L.latLng([41.123131, -87.32366]), 5);
+        let mapboxAccessToken = 'pk.eyJ1IjoiY2h1ZHV5dW5odWFuIiwiYSI6IjRkNDY1ZGFjODhhMjE3OWRiZjBhNGQ3Mzk0YjkwYzA0In0.OL0_ZspJJ36sMw_KyEDHmA';
+        let url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken
+        L.tileLayer(url, {
+            id: 'mapbox.dark',
+            noWrap: true,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 7,
+            minZoom: 3
+        }).addTo(this.map);
+        this.addDataCenterLayer();
+        this.addTwinkLayer();
+    }
+    addDataCenterLayer() {
         let geoInfo = this.mapService.getAllInfo();
         geoInfo.map((obj,i) => {
             let location = obj.location;
             let address = obj.address;
             if(!location) return;
             let icon = this.setIcon();
-			let marker = L.marker(location, {icon: icon, title: address}).addTo(this.dataCenterGroup);
+            let marker = L.marker(location, {icon: icon, title: address}).addTo(this.dataCenterGroup);
             marker.on('click', e => {
                 this.modalDataCenter = true;
                 this.modalInfo.address = address;
-                // this.vcds = this.mapService.getAllVcds().slice(0, parseInt((Math.random()*(10 - 1) + 1).toString()));
+                this.vcds = this.analyseService.getOrgs().slice(0, parseInt((Math.random()*(10 - 1) + 1).toString()));
+                this.siteChecked = this.vcds[0].site;
             });
         });
         this.map.addLayer(this.dataCenterGroup);
@@ -61,7 +67,7 @@ export class MapComponent implements OnInit {
        return icon;
    }
    addTwinkLayer() {
-   		setInterval(() =>{
+           setInterval(() =>{
             let geoInfo = this.mapService.getAllInfo();
             let len = geoInfo.length;
             let random = Math.random() * (len - 0) + 0;
@@ -85,6 +91,12 @@ export class MapComponent implements OnInit {
        }, 1000*60*0.2);
    }
    closeModalDataCenter() {
-   		this.modalDataCenter = false;
+        this.modalDataCenter = false;
    }
+    locate(location) {
+        this.map.panTo(location);
+    }
+    changeSiteChecked(name: string) {
+        this.siteChecked = name;
+    }
 }
