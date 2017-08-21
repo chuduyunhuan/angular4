@@ -48,14 +48,30 @@ export class MapComponent implements OnInit {
             if(!location) return;
             let icon = this.setIcon();
             let marker = L.marker(location, {icon: icon, title: address}).addTo(this.dataCenterGroup);
-            marker.on('click', e => {
-                this.modalDataCenter = true;
-                this.modalInfo.address = address;
-                this.vcds = this.analyseService.getOrgs().slice(0, parseInt((Math.random()*(10 - 1) + 1).toString()));
-                this.siteChecked = this.vcds[0].site;
-            });
+            this.registerMarkerClick(marker, address);
         });
         this.map.addLayer(this.dataCenterGroup);
+    }
+    registerMarkerClick(marker: any, address: string) {
+        marker.on('click', e => {
+            this.modalDataCenter = true;
+            this.modalInfo.address = address;
+            let start = ~~(Math.random()*(19 - 0) + 0);
+            let end = ~~(Math.random()*(19 - 0) + 0);
+            let order = this.exchange(start, end);
+            this.vcds = this.analyseService.getOrgs().slice(order[0], order[1]);
+            this.siteChecked = this.vcds[0].site;
+        });
+    }
+    exchange(start: number, end: number) {
+        if(start == end) {
+            end = start + 1;
+        }else if (start > end) {
+            start ^= end;
+            end ^= start;
+            start ^= end;
+        }
+        return[start, end];
     }
     setIcon() {
        let icon = L.icon({
