@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MapService } from './map.service';
 import { AnalyseService } from '../Analyse/analyse.service';
 import * as L from 'leaflet';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'map',
@@ -21,7 +22,8 @@ export class MapComponent implements OnInit {
     blinkList = ['change-twink-yellow', 'change-twink-green', 'change-twink-pink'];
     constructor(
     private mapService: MapService,
-    private analyseService: AnalyseService
+    private analyseService: AnalyseService,
+    private route: ActivatedRoute
   ) {}
     ngOnInit() {
         this.initMap();
@@ -39,6 +41,7 @@ export class MapComponent implements OnInit {
         }).addTo(this.map);
         this.addDataCenterLayer();
         this.addTwinkLayer();
+        this.getRouteParas();
     }
     addDataCenterLayer() {
         let geoInfo = this.mapService.getAllInfo();
@@ -106,6 +109,13 @@ export class MapComponent implements OnInit {
            this.map.removeLayer(marker);
        }, 1000*60*0.2);
    }
+    getRouteParas() {
+        this.route.params.subscribe((params: Params) => {
+            let location = params.location;
+            if(!location) return;
+            this.locate(JSON.parse(location));
+        })
+    }
    closeModalDataCenter() {
         this.modalDataCenter = false;
    }

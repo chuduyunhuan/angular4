@@ -37,11 +37,8 @@ export class SearchComponent implements OnInit, AfterViewInit{
             .subscribe(data => {
                 let result = data.results;
                 let location = result[0].geometry.location;
-                this.location = location;
-                let link = ['/map'];
+                let link = ['/map', {location: JSON.stringify(location)}];
                 this.router.navigate(link);
-                this.mapComponent.map;
-                this.mapComponent.locate(location);
             })
     }
     ngAfterViewInit() {
