@@ -29,6 +29,9 @@ export class SearchComponent implements OnInit, AfterViewInit{
     ) {}
     ngOnInit(): void {
         this.searchTerms
+            .filter(text => {
+                return text.length > 2;
+            })
             .debounceTime(300)
             .distinctUntilChanged()
             .switchMap(term => {
@@ -39,6 +42,8 @@ export class SearchComponent implements OnInit, AfterViewInit{
                 let location = result[0].geometry.location;
                 let link = ['/map', {location: JSON.stringify(location)}];
                 this.router.navigate(link);
+            }, err => {
+                console.error(err);
             })
     }
     ngAfterViewInit() {
