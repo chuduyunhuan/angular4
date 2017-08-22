@@ -35,6 +35,12 @@ export class MapService {
                 return data;
             });
     }
+    geocodeAll(arr) {
+        let urls = arr.map(val => {
+            return this.geocode(val);
+        });
+        return Observable.forkJoin(urls);
+    }
     private handleError(error: Response | any) {
         let errMsg: string;
         if (error instanceof Response) {

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 
 import { MapModule } from './Map/map.module';
 import { AnalyseModule } from './Analyse/analyse.module';
+import { UtilModule } from './Util/util.module';
 import { SearchModule } from './Search/search.module';
 
 import { ClarityModule } from "clarity-angular";
@@ -18,6 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     MapModule,
     AnalyseModule,
+    UtilModule,
     SearchModule,
     ClarityModule.forRoot(),
     AppRoutingModule

@@ -1,0 +1,11 @@
+<div>
+    <label>City Names:</label>
+    <textarea #cityNames></textarea>
+</div>
+<div class="div-center">
+    <input type="button" class="btn btn-primary" value="QUERY" (click)="beginQuery(cityNames.value)" />
+</div>
+<div>
+    <label>Query Results:</label>
+    <textarea class="big-text-area">{{cityData}}</textarea>
+</div>
