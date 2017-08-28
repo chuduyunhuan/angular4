@@ -5,12 +5,12 @@ import * as L from 'leaflet';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-    selector: 'map',
+    selector: 'map2',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements OnInit {
+export class MapComponent2 implements OnInit {
     map: any;
     dataCenterGroup = new L.featureGroup();
     modalDataCenter = false;
@@ -19,7 +19,8 @@ export class MapComponent implements OnInit {
     };
     siteChecked: string;
     vcds = [];
-    blinkList = ['change-twink-yellow', 'change-twink-green', 'change-twink-pink'];
+    siteIcons = ['yellow', 'green', 'red'];
+    blinkList = ['change-twink-yellow2', 'change-twink-green2', 'change-twink-pink2'];
     constructor(
     private mapService: MapService,
     private analyseService: AnalyseService,
@@ -49,11 +50,38 @@ export class MapComponent implements OnInit {
             let location = obj.location;
             let address = obj.address;
             if(!location) return;
-            let icon = this.setIcon();
-            let marker = L.marker(location, {icon: icon, title: address, opacity: 0.8}).addTo(this.dataCenterGroup);
+            let index = ~~(Math.random() * (3-0) + 0);
+            let icon = this.setIcon(this.siteIcons[index]);
+            let marker = L.marker(location, {icon: icon, title: address, opacity: 0.33, animated: false}).addTo(this.dataCenterGroup);
             this.registerMarkerClick(marker, address);
         });
         this.map.addLayer(this.dataCenterGroup);
+    }
+    setIcon(iconType: string, statusType?: string ) {
+        let icon = L.icon({
+            iconUrl: './assets/images/' + iconType + '.png',
+            iconSize: statusType == 'normal'? [20,20] : [90, 90],
+            iconAnchor: [30, 30],
+            popupAnchor: [0, 0]
+        });
+        return icon;
+    }
+    isFlashing(address: string, index: number): boolean {
+        let flag = true;
+        this.dataCenterGroup.eachLayer(layer => {
+            let options = layer.options;
+            let title = options.title;
+            if (title == address) {
+                let animated = options.animated;
+                if(!animated) {
+                    flag = false;
+                    let icon = this.setIcon(this.siteIcons[index]);
+                    layer.options.animated = true;
+                    layer.setIcon(icon);
+                }
+            }
+        });
+        return flag;
     }
     registerMarkerClick(marker: any, address: string) {
         marker.on('click', e => {
@@ -76,39 +104,43 @@ export class MapComponent implements OnInit {
         }
         return[start, end];
     }
-    setIcon() {
-       let icon = L.icon({
-           iconUrl: './assets/images/datacenter.png',
-           iconSize: [64, 64],
-           iconAnchor: [30, 30],
-           popupAnchor: [0, 0]
-       });
-       return icon;
-   }
-   addTwinkLayer() {
-           setInterval(() =>{
+    addTwinkLayer() {
+        setInterval(() =>{
             let geoInfo = this.mapService.getAllInfo();
             let len = geoInfo.length;
-            let random = Math.random() * (len - 0) + 0;
-            let data = geoInfo[parseInt(random.toString())];
-            let blink = this.blinkList[parseInt((Math.random() * (3 - 0) + 0).toString())];
-            this.registerAnimation(data.location, blink);
+            let random = ~~(Math.random() * (len - 0) + 0);
+            let data = geoInfo[random];
+            let address = data.address;
+            let blinkRandom = ~~(Math.random() * (3 - 0) + 0);
+            let blink = this.blinkList[blinkRandom];
+            if(this.isFlashing(address, blinkRandom)) {
+                return;
+            }
+            this.registerAnimation(data.location, blink, address);
         },1000*0.5);
-   }
-   registerAnimation(location: Object, className='change-twink-wx') {
-       let size = parseInt((Math.random() * (20 - 10) + 10).toString());
-       let left = Math.random() * (30 + 15) - 15;
-       let right = Math.random() * (30 + 15) - 15;
-       let icon = L.divIcon({
-           iconSize: L.point(size, size),
-           iconAnchor: [left, right],
-           className: className
-       });
-       let marker = L.marker(location, {icon: icon}).addTo(this.map);
-       setTimeout(() => {
-           this.map.removeLayer(marker);
-       }, 1000*60*0.2);
-   }
+    }
+    setAnimated(address: string) {
+        this.dataCenterGroup.eachLayer(layer => {
+            let options = layer.options;
+            let title = options.title;
+            if (title == address) {
+                layer.options.animated = false;
+                return;
+            }
+        });
+    }
+    registerAnimation(location: Object, className='change-twink-wx', title: string) {
+        let icon = L.divIcon({
+            iconSize: L.point(30, 30),
+            iconAnchor: [-10, -10], //self icon size divide 4 minus datacenter icon size divide 2, then plus datacenter icon anchor.
+            className: className
+        });
+        let marker = L.marker(location, {icon: icon, title: title}).addTo(this.map);
+        setTimeout(() => {
+            this.map.removeLayer(marker);
+            this.setAnimated(title);
+        }, 1000*60*0.2);
+    }
     getRouteParas() {
         this.route.params.subscribe((params: Params) => {
             let location = params.location;

@@ -31,7 +31,6 @@ export class MapService {
             .map(res => res.json())
             .catch(this.handleError)
             .map(data => {
-                if(data.status != 'OK') { throw new Error('unable to geocode address'); }
                 return data;
             });
     }

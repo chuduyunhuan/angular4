@@ -83,3 +83,101 @@
 .change-twink-pink {
     -webkit-animation: change-twinkling-pink 1s infinite ease-in-out;
 }
+
+@-webkit-keyframes change-twinkling-yellow2 {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: #fff;
+        background-position: 1px 1px;
+        background-size: 2px 2px;
+    }
+    to {
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        box-shadow: 0 0 20px #FF0088;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: orange;
+        background-repeat: no-repeat;
+        background-position: 5px 4px;
+        background-size: 20px 22px;
+    }
+}
+@-webkit-keyframes change-twinkling-green2 {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: #fff;
+        background-position: 1px 1px;
+        background-size: 2px 2px;
+   }
+    to {
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        box-shadow: 0 0 20px blueviolet;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: green;
+        background-repeat: no-repeat;
+        background-position: 5px 4px;
+        background-size: 20px 22px;
+    }
+}
+@-webkit-keyframes change-twinkling-pink2 {
+    from {
+        border-radius: 20px;
+        width: 5px;
+        height: 5px;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: #fff;
+        background-position: 1px 1px;
+        background-size: 2px 2px;
+    }
+    to {
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        box-shadow: 0 0 20px greenyellow;
+        background-image: url(./assets/images/block.png);
+        /* background-size: cover; */
+        opacity: 0.8;
+        background-color: red;
+        background-repeat: no-repeat;
+        background-position: 5px 4px;
+        background-size: 20px 22px;
+    }
+}
+
+.change-twink-yellow2 {
+    -webkit-animation: change-twinkling-yellow2 1s infinite ease-in-out;
+}
+.change-twink-green2 {
+    -webkit-animation: change-twinkling-green2 1s infinite ease-in-out;
+}
+.change-twink-pink2 {
+    -webkit-animation: change-twinkling-pink2 1s infinite ease-in-out;
+}
