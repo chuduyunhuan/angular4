@@ -21,10 +21,18 @@ export class MapComponent implements OnInit {
     vcds = [];
     blinkList = ['change-twink-yellow', 'change-twink-green', 'change-twink-pink'];
     constructor(
-    private mapService: MapService,
-    private analyseService: AnalyseService,
-    private route: ActivatedRoute
-  ) {}
+        private mapService: MapService,
+        private analyseService: AnalyseService,
+        private route: ActivatedRoute
+    ) {
+        document.addEventListener('click', function(e) {
+            let target = e.target;
+            if(target.type == 'radio') {
+                this.siteChecked = target.getAttribute('data-site');
+                console.log(this.siteChecked);
+            }
+        }.bind(this));
+    }
     ngOnInit() {
         this.initMap();
     }
